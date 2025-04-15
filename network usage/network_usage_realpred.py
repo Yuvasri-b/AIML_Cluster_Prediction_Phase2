@@ -72,7 +72,10 @@ for i in range(window_size, len(df)):
     if predicted_value > 80 or net_usage > 80:
         print(f"[{timestamp}]  High Network Usage detected on Node {node_id} ({net_usage}%) -> Taking action...")
         
-        
+        # Trigger remediation actions
+        scale_pods("my-app-deployment", namespace="default", replicas=5)
+        restart_pod(node_id, namespace="default")
+        enable_autoscaling("my-app-deployment")
     else:
         print(f"[{timestamp}]  Node {node_id} healthy, Network usage: {net_usage}%")
     
